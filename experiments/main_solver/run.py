@@ -290,20 +290,41 @@ def _parse_json_verifier(stdout: str, returncode: int) -> dict[str, Any]:
         }
     valid = payload.get("valid")
     if not isinstance(valid, bool):
+        valid = payload.get("is_valid")
+    if not isinstance(valid, bool):
         return {
             "status": "error",
             "valid": None,
             "returncode": returncode,
-            "parse_error": "JSON verifier report must contain boolean key 'valid'",
+            "parse_error": "JSON verifier report must contain boolean key 'valid' or 'is_valid'",
             "report": payload,
         }
+    diagnostics = payload.get("diagnostics", {})
+    if not isinstance(diagnostics, dict):
+        diagnostics = {}
+    if "warnings" in payload:
+        existing_warnings = diagnostics.get("warnings", [])
+        if not isinstance(existing_warnings, list):
+            existing_warnings = [existing_warnings]
+        payload_warnings = payload.get("warnings", [])
+        if not isinstance(payload_warnings, list):
+            payload_warnings = [payload_warnings]
+        diagnostics = {
+            **diagnostics,
+            "warnings": [*existing_warnings, *payload_warnings],
+        }
+    violations = (
+        payload["violations"]
+        if "violations" in payload and payload["violations"] is not None
+        else payload.get("errors", [])
+    )
     return {
         "status": "valid" if valid else "invalid",
         "valid": valid,
         "returncode": returncode,
         "metrics": payload.get("metrics", {}),
-        "violations": payload.get("violations", []),
-        "diagnostics": payload.get("diagnostics", {}),
+        "violations": violations,
+        "diagnostics": diagnostics,
         "report": payload,
     }
 
@@ -330,7 +351,12 @@ def _verify_solution(job: Job, solution_path: Path, *, log_dir: Path) -> dict[st
     stdout = (log_dir / "verifier.stdout.log").read_text(encoding="utf-8")
     if job.benchmark_id == "spot5":
         parsed = _parse_spot5_verifier(stdout, run["returncode"])
-    elif job.benchmark_id in ("aeossp_standard", "stereo_imaging", "regional_coverage"):
+    elif job.benchmark_id in (
+        "aeossp_standard",
+        "stereo_imaging",
+        "revisit_constellation",
+        "regional_coverage",
+    ):
         parsed = _parse_json_verifier(stdout, run["returncode"])
     else:
         parsed = {

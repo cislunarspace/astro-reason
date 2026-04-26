@@ -7,7 +7,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from experiments.main_solver.aggregate import _rows
+from experiments.main_solver.aggregate import _revisit_metric, _rows
 from experiments.main_solver.run import Job, _parse_json_verifier, _result_dir
 
 
@@ -25,6 +25,67 @@ def test_parse_json_verifier_records_aeossp_report() -> None:
     assert parsed["valid"] is True
     assert parsed["metrics"] == {"CR": 0.5}
     assert parsed["diagnostics"] == {"note": "ok"}
+
+
+def test_parse_json_verifier_records_revisit_report() -> None:
+    payload = {
+        "is_valid": True,
+        "metrics": {"capped_max_revisit_gap_hours": 1.25},
+        "errors": [],
+        "warnings": ["diagnostic note"],
+    }
+
+    parsed = _parse_json_verifier(json.dumps(payload), 0)
+
+    assert parsed["status"] == "valid"
+    assert parsed["valid"] is True
+    assert parsed["metrics"] == {"capped_max_revisit_gap_hours": 1.25}
+    assert parsed["violations"] == []
+    assert parsed["diagnostics"] == {"warnings": ["diagnostic note"]}
+
+
+def test_parse_json_verifier_merges_warnings_and_falls_back_from_null_violations() -> None:
+    payload = {
+        "valid": False,
+        "metrics": {},
+        "violations": None,
+        "errors": ["bad schedule"],
+        "warnings": ["top-level"],
+        "diagnostics": {"warnings": ["diagnostic"], "note": "kept"},
+    }
+
+    parsed = _parse_json_verifier(json.dumps(payload), 0)
+
+    assert parsed["status"] == "invalid"
+    assert parsed["violations"] == ["bad schedule"]
+    assert parsed["diagnostics"] == {
+        "warnings": ["diagnostic", "top-level"],
+        "note": "kept",
+    }
+
+
+def test_revisit_aggregation_prefers_verifier_primary_metric() -> None:
+    payload = {
+        "verifier": {
+            "metrics": {
+                "capped_max_revisit_gap_hours": 9.5,
+                "target_gap_summary": {
+                    "target-a": {
+                        "max_revisit_gap_hours": 20.0,
+                        "expected_revisit_period_hours": 8.0,
+                    }
+                },
+            }
+        }
+    }
+
+    assert _revisit_metric(payload, "capped_max_revisit_gap_hours") == 9.5
+
+
+def test_revisit_aggregation_handles_empty_target_rows() -> None:
+    payload = {"verifier": {"metrics": {"target_gap_summary": {"bad": None}}}}
+
+    assert _revisit_metric(payload, "max_revisit_gap_hours") == 0.0
 
 
 def test_parse_json_verifier_rejects_missing_valid() -> None:
