@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the AEOSSP temporal robustness ablation."""
+"""Run the AEOSSP difficulty ablation."""
 
 from __future__ import annotations
 
@@ -152,7 +152,7 @@ class RunResult:
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the temporal robustness ablation")
+    parser = argparse.ArgumentParser(description="Run the AEOSSP difficulty ablation")
     parser.add_argument("--config", type=Path, help="Override the family config path.")
     parser.add_argument("--interactive", action="store_true", help="Prepare one interactive workspace.")
     parser.add_argument("--split", action="append", default=[], help="Limit to a split. May be repeated.")
@@ -431,7 +431,7 @@ def _interactive_workspace_dir(config: InteractiveConfig, harness_identity: str,
     return (
         INTERACTIVE_WORKSPACES_ROOT
         / "experiments"
-        / "temporal_robustness"
+        / "difficulty_ablation"
         / config.config_path.stem
         / config.benchmark
         / harness_identity
@@ -823,7 +823,7 @@ def _write_run_json(
 ) -> None:
     payload = {
         "schema_version": 1,
-        "experiment": "temporal_robustness",
+        "experiment": "difficulty_ablation",
         "mode": mode,
         "config": _relative(item.config_path),
         "benchmark": item.benchmark,
@@ -913,8 +913,8 @@ def _run_item(item: RunItem) -> RunResult:
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     runtime = load_runtime(item.profile.runtime)
-    with tempfile.TemporaryDirectory(prefix="astroreason-temporal-workspace-") as workspace_tmp:
-        with tempfile.TemporaryDirectory(prefix="astroreason-temporal-runtime-") as runtime_tmp:
+    with tempfile.TemporaryDirectory(prefix="astroreason-difficulty-workspace-") as workspace_tmp:
+        with tempfile.TemporaryDirectory(prefix="astroreason-difficulty-runtime-") as runtime_tmp:
             workspace_dir = Path(workspace_tmp)
             runtime_dir = Path(runtime_tmp)
             roots = _prepare_roots(workspace_dir, runtime_dir, output_dir)
