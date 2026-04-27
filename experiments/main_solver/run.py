@@ -353,6 +353,7 @@ def _verify_solution(job: Job, solution_path: Path, *, log_dir: Path) -> dict[st
         parsed = _parse_spot5_verifier(stdout, run["returncode"])
     elif job.benchmark_id in (
         "aeossp_standard",
+        "relay_constellation",
         "stereo_imaging",
         "revisit_constellation",
         "regional_coverage",

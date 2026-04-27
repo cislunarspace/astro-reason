@@ -103,6 +103,29 @@ def test_parse_json_verifier_rejects_extra_stdout() -> None:
     assert "could not be parsed" in parsed["parse_error"]
 
 
+def test_parse_json_verifier_handles_relay_constellation() -> None:
+    """Relay verifier uses the same JSON schema as aeossp_standard."""
+    payload = {
+        "valid": True,
+        "metrics": {
+            "service_fraction": 0.694444,
+            "worst_demand_service_fraction": 0.5,
+            "mean_latency_ms": 42.0,
+            "latency_p95_ms": 55.0,
+            "num_added_satellites": 2,
+        },
+        "violations": [],
+        "diagnostics": {"note": "ok"},
+    }
+
+    parsed = _parse_json_verifier(json.dumps(payload), 0)
+
+    assert parsed["status"] == "valid"
+    assert parsed["valid"] is True
+    assert parsed["metrics"]["service_fraction"] == 0.694444
+    assert parsed["metrics"]["num_added_satellites"] == 2
+
+
 def test_policy_result_directory_preserves_policy_artifacts(tmp_path: Path) -> None:
     job = Job(
         solver={"benchmark": "example_benchmark", "id": "example_solver"},
