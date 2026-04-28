@@ -13,7 +13,7 @@ source:
     page_url: https://www.kaggle.com/datasets/juanmah/world-cities
 
 splits:
-  test:
+  test: &test_split
     seed: 84
     case_count: 5
     case_spec_seed_stride: 10007
@@ -62,3 +62,9 @@ splits:
         maneuver_discharge_rate_w: 90.0
       min_altitude_m: 500000.0
       max_altitude_m: 900000.0
+
+  train:
+    <<: *test_split
+    seed: 2027
+    case_count: 10
+    target_selection_seed_offset: 503

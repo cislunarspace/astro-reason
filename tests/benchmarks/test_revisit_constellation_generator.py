@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 import benchmarks.revisit_constellation.generator.run as generator_run
+from benchmarks.revisit_constellation.generator import sources
 
 
 def _write_world_cities_csv(path: Path) -> None:
@@ -152,3 +153,19 @@ def test_main_builds_dataset_from_yaml_and_keeps_download_controls_operational(
     )["targets"]
     assert targets
     assert all(abs(float(target["latitude_deg"])) < 70.0 for target in targets)
+
+
+def test_source_schema_match_requires_data_rows(tmp_path: Path) -> None:
+    header_only = tmp_path / "header_only.csv"
+    header_only.write_text("name,country,lat,lng,population\n\n", encoding="utf-8")
+    valid_source = tmp_path / "world_cities.csv"
+    _write_world_cities_csv(valid_source)
+
+    assert not sources._matches_alias_groups(
+        header_only,
+        sources.WORLD_CITIES_REQUIRED_COLUMNS,
+    )
+    assert sources._matches_alias_groups(
+        valid_source,
+        sources.WORLD_CITIES_REQUIRED_COLUMNS,
+    )
