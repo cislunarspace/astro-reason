@@ -48,13 +48,7 @@ dataset/
 The current canonical release contains 5 cases. Each case is self-contained.
 The verifier reads one case directory and one per-case solution file.
 
-The dataset-level `example_solution.json` is a minimal runnable example:
-
-```json
-{
-  "actions": []
-}
-```
+The dataset-level `example_solution.json` is a runnable smoke example, not a baseline.
 
 `dataset/index.json` includes split-relative `example_smoke_case`, which currently points to `test/case_0001`. The benchmark-owned construction contract lives in `benchmarks/regional_coverage/splits.yaml`.
 
@@ -436,7 +430,6 @@ Running the canonical generator rewrites `benchmarks/regional_coverage/dataset/`
 
 - `dataset/cases/test/`
 - `dataset/index.json`
-- `dataset/example_solution.json`
 
 ### Visualizer
 
