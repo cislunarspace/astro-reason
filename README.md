@@ -1,4 +1,4 @@
-English | [中文](README_zh.md)
+English | [中文](docs/i18n/zh_CN/README.md)
 
 # AstroReason-Bench
 
