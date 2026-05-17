@@ -1,3 +1,5 @@
+English | [中文](README_zh.md)
+
 # AstroReason-Bench
 
 AstroReason-Bench is evolving into a monorepo for space mission design benchmarks and first-party method layers.
