@@ -6,7 +6,7 @@ This directory contains committed end-to-end fixtures for the
 ## Purpose
 
 The fixture suite complements the focused unit-style verifier tests in
-[`tests/benchmarks/test_revisit_constellation_verifier.py`](/home/betelgeuse/Developments/AstroReason-Bench/tests/benchmarks/test_revisit_constellation_verifier.py).
+[`tests/benchmarks/test_revisit_constellation_verifier.py`](../../benchmarks/test_revisit_constellation_verifier.py).
 These fixtures exercise the current benchmark contract through real
 `assets.json`, `mission.json`, and `solution.json` inputs.
 
