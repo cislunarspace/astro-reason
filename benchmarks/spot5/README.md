@@ -1,3 +1,5 @@
+English | [中文](../../docs/i18n/zh_CN/benchmarks/spot5/README.md)
+
 # SPOT-5 Satellite Photography Scheduling Benchmark
 
 A canonical constraint optimization problem for Earth observation satellite scheduling, originating from the ROADEF 2003 Challenge and the operations of the French Space Agency (CNES).

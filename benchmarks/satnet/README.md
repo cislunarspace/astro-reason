@@ -1,3 +1,5 @@
+English | [中文](../../docs/i18n/zh_CN/benchmarks/satnet/README.md)
+
 # SatNet: Interplanetary Satellite Scheduling Benchmark
 
 A reinforcement learning benchmark for the **Deep Space Network (DSN) Scheduling Problem**. This challenge involves optimally allocating ground station antenna time to communicate with spacecraft across the solar system, respecting strict physical and operational constraints.
