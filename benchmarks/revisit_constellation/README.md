@@ -1,3 +1,5 @@
+English | [中文](../../docs/i18n/zh_CN/benchmarks/revisit_constellation/README.md)
+
 # Revisit Constellation Benchmark
 
 ## Status

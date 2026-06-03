@@ -1,3 +1,5 @@
+English | [中文](../../../docs/i18n/zh_CN/benchmarks/satnet/dataset/README.md)
+
 # SatNet Dataset Layout
 
 The canonical SatNet dataset is stored as case-by-case week/year instances.

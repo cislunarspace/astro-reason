@@ -1,3 +1,5 @@
+[English](../../../../../benchmarks/aeossp_standard/README.md) | 中文
+
 # AEOSSP Standard Benchmark
 
 ## 状态

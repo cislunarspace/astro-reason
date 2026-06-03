@@ -1,3 +1,5 @@
+[English](../../../../../benchmarks/satnet/README.md) | 中文
+
 # SatNet：行星际卫星调度 Benchmark
 
 一个用于**深空网络（DSN）调度问题**的强化学习 benchmark。该挑战涉及将地面站天线时间最优分配给整个太阳系的航天器进行通信，同时遵守严格的物理与操作约束。

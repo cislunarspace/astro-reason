@@ -1,3 +1,5 @@
+English | [中文](../../docs/i18n/zh_CN/benchmarks/relay_constellation/README.md)
+
 # Relay Constellation Benchmark
 
 ## Status

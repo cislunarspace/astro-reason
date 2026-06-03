@@ -1,3 +1,5 @@
+English | [中文](../../../docs/i18n/zh_CN/benchmarks/spot5/dataset/README.md)
+
 # SPOT-5 Dataset Layout
 
 The canonical SPOT-5 dataset is stored case by case under `cases/`.

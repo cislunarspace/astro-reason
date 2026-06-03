@@ -1,3 +1,5 @@
+English | [中文](../../docs/i18n/zh_CN/benchmarks/regional_coverage/README.md)
+
 # Regional Coverage Benchmark
 
 ## Problem
